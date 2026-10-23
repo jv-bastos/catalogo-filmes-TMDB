@@ -9,7 +9,6 @@ test('catálogo carrega pôsteres', async ({ page }) => {
 
 test('filtrar por Netflix muda a URL e mantém resultados', async ({ page }) => {
   await page.goto('/');
-  // Checkbox controlado: o estado só muda após a navegação, então .check() falharia; usamos click.
   await page.getByRole('checkbox', { name: 'Netflix' }).click();
   await expect(page).toHaveURL(/providers=8(&|$)/);
   await expect(page.getByRole('checkbox', { name: 'Netflix' })).toBeChecked();

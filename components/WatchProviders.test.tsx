@@ -4,7 +4,7 @@ import type { WatchOptions } from '@/lib/tmdb/types';
 import { WatchProviders } from './WatchProviders';
 
 describe('WatchProviders', () => {
-  it('mostra só os grupos com provedores e o link do JustWatch', () => {
+  it('mostra só os grupos com provedores e o link do TMDB', () => {
     render(
       <WatchProviders
         watch={{ link: 'https://jw', flatrate: [{ id: 8, name: 'Netflix', logoPath: '/n.png' }], rent: [], buy: [] }}
@@ -14,7 +14,7 @@ describe('WatchProviders', () => {
     expect(screen.getByText('Assinatura')).toBeInTheDocument();
     expect(screen.queryByText('Aluguel')).toBeNull();
     expect(screen.getByAltText('Netflix')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Ver no JustWatch' })).toHaveAttribute('href', 'https://jw');
+    expect(screen.getByRole('link', { name: 'Ver todas as opções no TMDB' })).toHaveAttribute('href', 'https://jw');
   });
   it.each<WatchOptions | null>([null, { link: null, flatrate: [], rent: [], buy: [] }])(
     'sem provedores mostra aviso',

@@ -42,4 +42,10 @@ describe('ProviderFilter', () => {
     await userEvent.click(screen.getByRole('checkbox', { name: 'Netflix' }));
     expect(push).toHaveBeenCalledWith('/');
   });
+  it('dois cliques rápidos acumulam a seleção (sem perder o primeiro)', async () => {
+    render(<ProviderFilter providers={providers} selected={[]} />);
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Netflix' }));
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Amazon Prime Video' }));
+    expect(push).toHaveBeenLastCalledWith('/?providers=8%2C119');
+  });
 });

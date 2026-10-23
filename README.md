@@ -20,6 +20,9 @@ Catálogo de filmes disponíveis em streaming no Brasil, com dados da API do TMD
 
 ## Como rodar
 
+Requisito: Node 20.12+ (testado com Node 24).
+
+
 1. Crie uma conta gratuita no [TMDB](https://www.themoviedb.org/signup) e, em Configurações > API, copie o **API Read Access Token**.
 2. Copie o arquivo de exemplo e preencha o token:
    ```bash

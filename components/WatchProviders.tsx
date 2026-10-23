@@ -39,7 +39,7 @@ export function WatchProviders({ watch }: { watch: WatchOptions | null }) {
           <Group title="Compra" providers={watch.buy} />
           {watch.link && (
             <a href={watch.link} target="_blank" rel="noopener noreferrer" className="inline-block text-sm underline">
-              Ver no JustWatch
+              Ver todas as opções no TMDB
             </a>
           )}
         </>

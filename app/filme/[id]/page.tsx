@@ -46,7 +46,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
             alt={movie.title}
             width={500}
             height={750}
-            priority
+            preload
             className="aspect-[2/3] w-full max-w-xs rounded-lg object-cover sm:w-64"
           />
         ) : (

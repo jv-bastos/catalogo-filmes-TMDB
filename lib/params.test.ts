@@ -23,6 +23,7 @@ describe('parsePage', () => {
   it.each([undefined, '', 'abc', '0', '-3', '2.5'])('valor inválido %s vira 1', (v) => {
     expect(parsePage(v)).toBe(1);
   });
+  it('usa o primeiro valor quando recebe array', () => expect(parsePage(['3', '5'])).toBe(3));
   it('limita a MAX_PAGES', () => expect(parsePage('600')).toBe(500));
 });
 

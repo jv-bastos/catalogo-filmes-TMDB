@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Catálogo de Filmes em Streaming (Brasil)
 
-## Getting Started
+Catálogo de filmes disponíveis em streaming no Brasil, com dados da API do TMDB, onde você descobre **onde assistir** cada título.
 
-First, run the development server:
+## Funcionalidades (v1)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Catálogo paginado de filmes disponíveis por assinatura no Brasil
+- Filtro por streaming (os 12 principais provedores no BR), refletido na URL
+- Busca por título (`/busca?q=`)
+- Página de detalhes com sinopse, elenco e "Onde assistir" (assinatura, aluguel e compra)
+- Interface em português (pt-BR), com estados de erro, vazio e carregamento
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [Next.js 16](https://nextjs.org) (App Router, Server Components) e React 19
+- TypeScript e Tailwind CSS 4
+- Vitest, Testing Library e MSW para testes unitários e de componentes
+- Playwright para smoke tests E2E
+- [API do TMDB](https://developer.themoviedb.org/)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Como rodar
 
-## Learn More
+1. Crie uma conta gratuita no [TMDB](https://www.themoviedb.org/signup) e, em Configurações > API, copie o **API Read Access Token**.
+2. Copie o arquivo de exemplo e preencha o token:
+   ```bash
+   cp .env.example .env.local
+   # edite .env.local e defina TMDB_TOKEN=<seu token>
+   ```
+3. Instale as dependências e inicie:
+   ```bash
+   npm install
+   npm run dev
+   ```
+4. Abra [http://localhost:3000](http://localhost:3000).
 
-To learn more about Next.js, take a look at the following resources:
+O token fica apenas no servidor (nunca usa o prefixo `NEXT_PUBLIC_`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Script | O que faz |
+| --- | --- |
+| `npm run dev` | Servidor de desenvolvimento |
+| `npm run build` | Build de produção |
+| `npm run test` | Testes unitários e de componentes (Vitest) |
+| `npm run test:e2e` | Smoke tests E2E (Playwright; exige `TMDB_TOKEN`, senão são pulados) |
+| `npm run typecheck` | Checagem de tipos (`tsc --noEmit`) |
+| `npm run lint` | ESLint |
 
-## Deploy on Vercel
+Na primeira execução dos testes E2E, rode `npx playwright install chromium`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Como foi construído
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Projeto de estudo de desenvolvimento com [Claude Code](https://claude.com/claude-code): brainstorming, depois especificação, plano de implementação e execução por subagentes, com revisão a cada tarefa.
+
+- [Especificação de design](docs/superpowers/specs/2026-10-23-catalogo-filmes-design.md)
+- [Plano de implementação](docs/superpowers/plans/2026-10-23-catalogo-filmes.md)
+
+## Atribuição
+
+This product uses the TMDB API but is not endorsed or certified by TMDB.
+Dados de streaming fornecidos por JustWatch.

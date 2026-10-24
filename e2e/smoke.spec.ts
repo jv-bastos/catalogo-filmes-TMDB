@@ -52,3 +52,18 @@ test('buscar Duna e abrir detalhes mostra Onde assistir', async ({ page }) => {
   await page.getByRole('list', { name: 'Filmes' }).getByRole('link').first().click();
   await expect(page.getByRole('heading', { name: 'Onde assistir' })).toBeVisible();
 });
+
+test('grade ocupa 4 linhas completas de 5 filmes no desktop', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  const items = page.getByRole('list', { name: 'Filmes' }).getByRole('listitem');
+  await expect(items).toHaveCount(20);
+  const ys: number[] = [];
+  for (const item of await items.all()) {
+    const box = await item.boundingBox();
+    ys.push(Math.round(box!.y));
+  }
+  const rows = new Map<number, number>();
+  for (const y of ys) rows.set(y, (rows.get(y) ?? 0) + 1);
+  expect([...rows.values()]).toEqual([5, 5, 5, 5]);
+});

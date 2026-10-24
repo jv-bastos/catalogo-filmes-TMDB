@@ -41,7 +41,6 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
 
   return (
     <div className="flex flex-col gap-12">
-      <BackButton />
       <section className="relative -mx-4 -mt-6 sm:-mx-6 lg:-mx-10 lg:-mt-8">
         {backdrop && (
           <div aria-hidden className="absolute inset-x-0 top-0 h-[22rem] overflow-hidden lg:h-[30rem]">
@@ -58,9 +57,10 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
             <div className="absolute inset-0 bg-gradient-to-r from-noite/80 to-transparent" />
           </div>
         )}
-        <div
-          className="relative flex flex-col gap-8 px-4 pt-6 sm:flex-row sm:items-start sm:px-6 lg:px-10 lg:pt-8"
-        >
+        <div className="relative flex px-4 pt-6 sm:px-6 lg:px-10 lg:pt-8">
+          <BackButton />
+        </div>
+        <div className="relative flex flex-col gap-8 px-4 pt-6 sm:flex-row sm:items-start sm:px-6 lg:px-10">
           {poster ? (
             <Image
               src={poster}

@@ -10,6 +10,7 @@ export function BackButton() {
   const router = useRouter();
 
   function onClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
     if (!hasInAppHistory()) return;
     event.preventDefault();
     router.back();

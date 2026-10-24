@@ -50,7 +50,7 @@ describe('WatchProviders', () => {
 
   it('provedor sem logo mostra o nome e nenhuma imagem', () => {
     render(<WatchProviders watch={{ link: null, flatrate: [provider(9, 'Canal Local', null)], rent: [], buy: [] }} />);
-    expect(screen.getAllByText('Canal Local').length).toBeGreaterThan(0);
+    expect(screen.getByText('Canal Local')).toBeInTheDocument();
     expect(document.querySelector('img')).toBeNull();
   });
 

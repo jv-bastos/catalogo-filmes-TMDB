@@ -17,6 +17,12 @@ describe('CastList', () => {
     expect(screen.getByRole('list', { name: 'Elenco' })).toBeInTheDocument();
     expect(document.querySelector('img')).toHaveAttribute('draggable', 'false');
   });
+  it('a lista é focável pelo teclado e tem role list', () => {
+    render(<CastList cast={[{ id: 1, name: 'Zendaya', character: 'Chani', profilePath: null }]} />);
+    const list = screen.getByRole('list', { name: 'Elenco' });
+    expect(list).toHaveAttribute('tabindex', '0');
+    expect(list).toHaveAttribute('role', 'list');
+  });
   it('sem foto mostra as iniciais', () => {
     render(<CastList cast={[{ id: 1, name: 'Zendaya', character: 'Chani', profilePath: null }]} />);
     expect(screen.getByText('Z')).toBeInTheDocument();

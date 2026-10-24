@@ -117,6 +117,19 @@ test('voltar sem histórico vai para o catálogo', async ({ page }) => {
   await expect(page).toHaveURL(/^https?:\/\/[^/]+\/$/);
 });
 
+test('voltar após usar o voltar do navegador não sai do app', async ({ page }) => {
+  await page.goto('/filme/438631');
+  await page.getByRole('link', { name: 'Voltar', exact: true }).click();
+  await expect(page).toHaveURL((url) => url.pathname === '/');
+  await page.getByRole('list', { name: 'Filmes' }).getByRole('link').nth(1).click();
+  await expect(page).toHaveURL(/\/filme\/(?!438631)/);
+  await page.goBack();
+  await page.goBack();
+  await expect(page).toHaveURL(/\/filme\/438631/);
+  await page.getByRole('link', { name: 'Voltar', exact: true }).click();
+  await expect(page).toHaveURL(/^https?:\/\/localhost:3000\/$/);
+});
+
 test('elenco arrasta com o mouse', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/filme/438631');

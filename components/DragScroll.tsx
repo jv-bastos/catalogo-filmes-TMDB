@@ -50,6 +50,8 @@ export function DragScroll({
   return (
     <ul
       ref={ref}
+      role="list"
+      tabIndex={0}
       aria-label={ariaLabel}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}

@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { BackButton } from '@/components/BackButton';
 import { CastList } from '@/components/CastList';
 import { WatchProviders } from '@/components/WatchProviders';
 import { parseMovieId } from '@/lib/params';
@@ -57,9 +56,6 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
             <div className="absolute inset-0 bg-gradient-to-r from-noite/80 to-transparent" />
           </div>
         )}
-        <div className="relative flex px-4 pt-6 sm:px-6 lg:px-10 lg:pt-8">
-          <BackButton />
-        </div>
         <div className="relative flex flex-col gap-8 px-4 pt-6 sm:flex-row sm:items-start sm:px-6 lg:px-10">
           {poster ? (
             <Image

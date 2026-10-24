@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Bricolage_Grotesque, Figtree } from "next/font/google";
 import Link from "next/link";
-import { Suspense } from "react";
 import { Logo } from "@/components/Logo";
-import { NavigationTracker } from "@/components/NavigationTracker";
 import { SearchBox } from "@/components/SearchBox";
 import "./globals.css";
 
@@ -27,9 +25,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="pt-BR" className={`${bricolage.variable} ${figtree.variable} h-full antialiased`}>
       <body className="min-h-full font-sans">
-        <Suspense fallback={null}>
-          <NavigationTracker />
-        </Suspense>
         <header className="sticky top-0 z-30 border-b border-linha/60 bg-noite/85 backdrop-blur-md">
           <div className="flex items-center gap-4 px-4 py-3 sm:gap-8 sm:px-6 sm:py-4 lg:px-10">
             <Link href="/" aria-label="Sessão, voltar ao catálogo" className="shrink-0 rounded-xl">

@@ -41,24 +41,26 @@ const makeMovies = (n: number): MovieSummary[] =>
   }));
 
 describe('FeaturedCarousel', () => {
-  it('renderiza 5 slides rotulados e 5 bolinhas', () => {
+  it('renderiza 5 slides rotulados e 5 indicadores decorativos sem botões', () => {
     render(<FeaturedCarousel movies={makeMovies(5)} />);
     expect(screen.getByRole('region', { name: 'Destaques' })).toBeInTheDocument();
     const slides = screen.getAllByRole('group');
     expect(slides.map((s) => s.getAttribute('aria-label'))).toEqual(['1 de 5', '2 de 5', '3 de 5', '4 de 5', '5 de 5']);
-    for (let n = 1; n <= 5; n++) {
-      expect(screen.getByRole('button', { name: `Ir para o destaque ${n}` })).toBeInTheDocument();
-    }
+    const dots = screen.getAllByTestId('indicador-destaque');
+    expect(dots).toHaveLength(5);
+    expect(dots[0].parentElement).toHaveAttribute('aria-hidden', 'true');
+    expect(screen.queryAllByRole('button')).toHaveLength(0);
   });
 
-  it('marca a primeira bolinha como atual', () => {
+  it('marca só o primeiro indicador como ativo', () => {
     render(<FeaturedCarousel movies={makeMovies(5)} />);
-    expect(screen.getByRole('button', { name: 'Ir para o destaque 1' })).toHaveAttribute('aria-current', 'true');
-    expect(screen.getByRole('button', { name: 'Ir para o destaque 2' })).not.toHaveAttribute('aria-current', 'true');
+    const active = screen.getAllByTestId('indicador-destaque').map((d) => d.getAttribute('data-active'));
+    expect(active).toEqual(['true', 'false', 'false', 'false', 'false']);
   });
 
-  it('com 1 filme não mostra bolinhas', () => {
+  it('com 1 filme não mostra indicadores', () => {
     render(<FeaturedCarousel movies={makeMovies(1)} />);
+    expect(screen.queryAllByTestId('indicador-destaque')).toHaveLength(0);
     expect(screen.queryAllByRole('button')).toHaveLength(0);
     expect(screen.getByRole('heading', { name: 'Filme 1' })).toBeInTheDocument();
   });

@@ -2,14 +2,20 @@
 
 import Autoplay from 'embla-carousel-autoplay';
 import useEmblaCarousel from 'embla-carousel-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { MovieSummary } from '@/lib/tmdb/types';
 import { FeaturedMovie } from './FeaturedMovie';
 
 export function FeaturedCarousel({ movies }: { movies: MovieSummary[] }) {
   const multiple = movies.length > 1;
   const [autoplay] = useState(() =>
-    Autoplay({ delay: 7000, stopOnInteraction: false, stopOnMouseEnter: true, stopOnFocusIn: true }),
+    Autoplay({
+      delay: 7000,
+      stopOnInteraction: false,
+      stopOnMouseEnter: true,
+      stopOnFocusIn: true,
+      breakpoints: { '(prefers-reduced-motion: reduce)': { active: false } },
+    }),
   );
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: multiple, align: 'start' }, multiple ? [autoplay] : []);
   const [selected, setSelected] = useState(0);
@@ -19,15 +25,10 @@ export function FeaturedCarousel({ movies }: { movies: MovieSummary[] }) {
     const onSelect = () => setSelected(emblaApi.selectedScrollSnap());
     onSelect();
     emblaApi.on('select', onSelect).on('reInit', onSelect);
-    if (multiple && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      emblaApi.plugins().autoplay?.stop();
-    }
     return () => {
       emblaApi.off('select', onSelect).off('reInit', onSelect);
     };
   }, [emblaApi, multiple]);
-
-  const scrollTo = useCallback((index: number) => emblaApi?.scrollTo(index), [emblaApi]);
 
   if (movies.length === 0) return null;
 
@@ -53,15 +54,13 @@ export function FeaturedCarousel({ movies }: { movies: MovieSummary[] }) {
         </div>
       </div>
       {multiple && (
-        <div className="absolute inset-x-0 bottom-4 flex justify-center gap-2 lg:bottom-6">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-4 flex justify-center gap-2 lg:bottom-6">
           {movies.map((movie, i) => (
-            <button
+            <span
               key={movie.id}
-              type="button"
-              aria-label={`Ir para o destaque ${i + 1}`}
-              aria-current={i === selected ? 'true' : undefined}
-              onClick={() => scrollTo(i)}
-              className={`h-2 rounded-full transition-all ${i === selected ? 'bg-sessao w-8' : 'w-2 bg-texto/40 hover:bg-texto/70'}`}
+              data-testid="indicador-destaque"
+              data-active={i === selected ? 'true' : 'false'}
+              className={`h-2 rounded-full transition-all ${i === selected ? 'bg-sessao w-8' : 'w-2 bg-texto/40'}`}
             />
           ))}
         </div>

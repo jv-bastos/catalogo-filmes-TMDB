@@ -73,18 +73,18 @@ test('carrossel de destaques troca sozinho e aceita arrastar', async ({ page }) 
   await page.goto('/');
   const carousel = page.getByRole('region', { name: 'Destaques' });
   await expect(carousel).toBeVisible();
-  const dots = carousel.getByRole('button', { name: /Ir para o destaque/ });
+  const dots = carousel.getByTestId('indicador-destaque');
   await expect(dots).toHaveCount(5);
-  const dot = (n: number) => carousel.getByRole('button', { name: `Ir para o destaque ${n}` });
+  const dot = (n: number) => dots.nth(n - 1);
 
   // Troca sozinho (autoplay de 7s). Mouse fora do carrossel para não pausar.
   await page.mouse.move(0, 0);
-  await expect(dot(2)).toHaveAttribute('aria-current', 'true', { timeout: 10_000 });
+  await expect(dot(2)).toHaveAttribute('data-active', 'true', { timeout: 10_000 });
 
   // Arrasta da direita para a esquerda.
   const activeIndex = async () => {
     for (let n = 1; n <= 5; n++) {
-      if ((await dot(n).getAttribute('aria-current')) === 'true') return n;
+      if ((await dot(n).getAttribute('data-active')) === 'true') return n;
     }
     return 0;
   };
@@ -100,8 +100,4 @@ test('carrossel de destaques troca sozinho e aceita arrastar', async ({ page }) 
   }
   await page.mouse.up();
   await expect.poll(activeIndex).not.toBe(before);
-
-  // Clique numa bolinha.
-  await dot(4).click();
-  await expect(dot(4)).toHaveAttribute('aria-current', 'true');
 });

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useTransition } from 'react';
+import { useEffect, useRef, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { logoUrl } from '@/lib/tmdb/images';
 import { catalogHref } from '@/lib/urls';
@@ -29,6 +29,15 @@ export function ProviderFilter({ providers, selected }: { providers: Provider[];
     setCurrent(selected);
   }
   const [isPending, startTransition] = useTransition();
+  // Desabilitar o fieldset tira o foco do checkbox; devolve ao último clicado.
+  const inputs = useRef(new Map<number, HTMLInputElement>());
+  const lastToggled = useRef<number | null>(null);
+  useEffect(() => {
+    if (!isPending && lastToggled.current !== null) {
+      inputs.current.get(lastToggled.current)?.focus();
+      lastToggled.current = null;
+    }
+  }, [isPending]);
 
   function toggle(id: number) {
     const next = (current.includes(id) ? current.filter((s) => s !== id) : [...current, id]).sort(
@@ -36,6 +45,7 @@ export function ProviderFilter({ providers, selected }: { providers: Provider[];
     );
     // Estado local fora da transição: o clique aparece marcado na hora.
     setCurrent(next);
+    lastToggled.current = id;
     startTransition(() => {
       router.push(catalogHref(next));
     });
@@ -51,6 +61,10 @@ export function ProviderFilter({ providers, selected }: { providers: Provider[];
             return (
               <label key={p.id} className="provider-chip has-[:disabled]:cursor-wait">
                 <input
+                  ref={(el) => {
+                    if (el) inputs.current.set(p.id, el);
+                    else inputs.current.delete(p.id);
+                  }}
                   type="checkbox"
                   checked={current.includes(p.id)}
                   onChange={() => toggle(p.id)}

@@ -116,3 +116,21 @@ test('voltar sem histórico vai para o catálogo', async ({ page }) => {
   await page.getByRole('link', { name: 'Voltar', exact: true }).click();
   await expect(page).toHaveURL(/^https?:\/\/[^/]+\/$/);
 });
+
+test('elenco arrasta com o mouse', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/filme/438631');
+  const list = page.getByRole('list', { name: 'Elenco' });
+  await expect(list).toBeVisible();
+  const scrollLeft = () => list.evaluate((el) => el.scrollLeft);
+  expect(await scrollLeft()).toBe(0);
+  await list.scrollIntoViewIfNeeded();
+  const box = (await list.boundingBox())!;
+  const y = box.y + box.height / 2;
+  const startX = box.x + box.width / 2;
+  await page.mouse.move(startX, y);
+  await page.mouse.down();
+  for (let i = 1; i <= 10; i++) await page.mouse.move(startX - 40 * i, y);
+  await page.mouse.up();
+  await expect.poll(scrollLeft).toBeGreaterThan(0);
+});

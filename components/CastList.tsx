@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { DragScroll } from './DragScroll';
 import { profileUrl } from '@/lib/tmdb/images';
 import type { CastMember } from '@/lib/tmdb/types';
 
@@ -12,7 +13,10 @@ export function CastList({ cast }: { cast: CastMember[] }) {
   return (
     <section className="flex flex-col gap-4">
       <h2 className="title-display text-3xl">Elenco</h2>
-      <ul className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 lg:-mx-10 lg:px-10">
+      <DragScroll
+        aria-label="Elenco"
+        className="sem-barra -mx-4 flex gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 lg:-mx-10 lg:px-10"
+      >
         {cast.map((c) => {
           const photo = profileUrl(c.profilePath);
           return (
@@ -21,6 +25,7 @@ export function CastList({ cast }: { cast: CastMember[] }) {
                 <Image
                   src={photo}
                   alt=""
+                  draggable={false}
                   width={185}
                   height={278}
                   className="aspect-[3/4] w-full rounded-xl object-cover ring-1 ring-white/10"
@@ -40,7 +45,7 @@ export function CastList({ cast }: { cast: CastMember[] }) {
             </li>
           );
         })}
-      </ul>
+      </DragScroll>
     </section>
   );
 }

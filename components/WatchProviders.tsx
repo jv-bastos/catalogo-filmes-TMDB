@@ -2,21 +2,39 @@ import Image from 'next/image';
 import { logoUrl } from '@/lib/tmdb/images';
 import type { Provider, WatchOptions } from '@/lib/tmdb/types';
 
+function initials(name: string): string {
+  const parts = name.split(' ').filter(Boolean);
+  if (parts.length === 0) return '';
+  return (parts[0][0] + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase();
+}
+
 function Group({ title, providers }: { title: string; providers: Provider[] }) {
   if (providers.length === 0) return null;
   return (
-    <div className="flex flex-col gap-2.5">
+    <div className="flex flex-col gap-3">
       <h3 className="text-sm font-semibold text-suave">{title}</h3>
-      <ul className="flex flex-wrap gap-2.5">
+      <ul className="flex flex-wrap gap-4">
         {providers.map((p) => {
           const logo = logoUrl(p.logoPath);
           return (
-            <li key={p.id} title={p.name}>
+            <li key={p.id} className="flex w-20 flex-col items-center gap-2">
               {logo ? (
-                <Image src={logo} alt={p.name} width={52} height={52} className="size-13 rounded-xl ring-1 ring-white/10" />
+                <Image
+                  src={logo}
+                  alt=""
+                  width={64}
+                  height={64}
+                  className="size-16 rounded-xl object-cover ring-1 ring-white/10"
+                />
               ) : (
-                <span className="inline-block rounded-xl bg-palco-alto px-3 py-2 text-sm">{p.name}</span>
+                <span
+                  aria-hidden
+                  className="title-display grid size-16 place-items-center rounded-xl bg-palco-alto text-xl text-suave ring-1 ring-white/10"
+                >
+                  {initials(p.name)}
+                </span>
               )}
+              <span className="text-center text-sm leading-snug">{p.name}</span>
             </li>
           );
         })}
@@ -28,17 +46,15 @@ function Group({ title, providers }: { title: string; providers: Provider[] }) {
 export function WatchProviders({ watch }: { watch: WatchOptions | null }) {
   const empty = !watch || (watch.flatrate.length === 0 && watch.rent.length === 0 && watch.buy.length === 0);
   return (
-    <section className="rounded-2xl border-[1.5px] border-transparent p-5 [background:linear-gradient(var(--palco),var(--palco))_padding-box,var(--gradiente-sessao)_border-box] sm:p-6">
-      <h2 className="title-display mb-4 text-3xl">Onde assistir</h2>
+    <section className="flex flex-col gap-4">
+      <h2 className="title-display text-3xl">Onde assistir</h2>
       {empty ? (
         <p className="text-suave">Não disponível em streaming no Brasil</p>
       ) : (
-        <div className="flex flex-col gap-5">
-          <div className="flex flex-wrap gap-x-10 gap-y-5">
-            <Group title="Assinatura" providers={watch.flatrate} />
-            <Group title="Aluguel" providers={watch.rent} />
-            <Group title="Compra" providers={watch.buy} />
-          </div>
+        <>
+          <Group title="Assinatura" providers={watch.flatrate} />
+          <Group title="Aluguel" providers={watch.rent} />
+          <Group title="Compra" providers={watch.buy} />
           {watch.link && (
             <a
               href={watch.link}
@@ -49,7 +65,7 @@ export function WatchProviders({ watch }: { watch: WatchOptions | null }) {
               Ver todas as opções no TMDB
             </a>
           )}
-        </div>
+        </>
       )}
     </section>
   );

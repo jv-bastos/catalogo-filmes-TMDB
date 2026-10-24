@@ -5,7 +5,8 @@ import { afterAll, afterEach, beforeAll, beforeEach, vi } from 'vitest';
 import { server } from './msw-server';
 
 vi.mock('next/image', () => ({
-  default: ({ src, alt }: { src: string; alt: string }) => createElement('img', { src, alt }),
+  default: ({ src, alt, draggable }: { src: string; alt: string; draggable?: boolean }) =>
+    createElement('img', { src, alt, draggable }),
 }));
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));

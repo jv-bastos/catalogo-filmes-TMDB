@@ -82,6 +82,13 @@ body {
   }
 }
 
+@utility sem-barra {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @utility btn-ghost {
   display: inline-flex;
   align-items: center;

@@ -59,9 +59,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
           </div>
         )}
         <div
-          className={`relative flex flex-col gap-8 px-4 sm:flex-row sm:items-start sm:px-6 lg:px-10 ${
-            backdrop ? 'pt-40 lg:pt-56' : 'pt-8'
-          }`}
+          className="relative flex flex-col gap-8 px-4 pt-6 sm:flex-row sm:items-start sm:px-6 lg:px-10 lg:pt-8"
         >
           {poster ? (
             <Image
@@ -97,11 +95,13 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
               </ul>
             )}
             <p className="max-w-[65ch] leading-relaxed text-texto/85">{movie.overview ?? 'Sinopse não disponível'}</p>
-            <WatchProviders watch={movie.watch} />
           </div>
         </div>
       </section>
-      <CastList cast={movie.cast} />
+      <div className="relative flex flex-col gap-12">
+        <WatchProviders watch={movie.watch} />
+        <CastList cast={movie.cast} />
+      </div>
     </div>
   );
 }

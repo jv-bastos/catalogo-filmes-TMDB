@@ -4,17 +4,17 @@ import { backdropUrl } from '@/lib/tmdb/images';
 import type { MovieSummary } from '@/lib/tmdb/types';
 import { PlayIcon } from './icons';
 
-export function FeaturedMovie({ movie }: { movie: MovieSummary }) {
+export function FeaturedMovie({ movie, priority = false }: { movie: MovieSummary; priority?: boolean }) {
   const backdrop = backdropUrl(movie.backdropPath);
   if (!backdrop) return null;
   return (
-    <section aria-label="Destaque" className="relative -mx-4 -mt-6 overflow-hidden sm:-mx-6 lg:-mx-10 lg:-mt-8">
+    <div className="relative overflow-hidden">
       <Image
         src={backdrop}
         alt=""
         fill
-        loading="eager"
-        fetchPriority="high"
+        loading={priority ? 'eager' : 'lazy'}
+        fetchPriority={priority ? 'high' : 'auto'}
         sizes="(min-width: 1024px) calc(100vw - 16rem), 100vw"
         className="object-cover object-[center_20%]"
       />
@@ -36,6 +36,6 @@ export function FeaturedMovie({ movie }: { movie: MovieSummary }) {
           </Link>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

@@ -67,3 +67,41 @@ test('grade ocupa 4 linhas completas de 5 filmes no desktop', async ({ page }) =
   for (const y of ys) rows.set(y, (rows.get(y) ?? 0) + 1);
   expect([...rows.values()]).toEqual([5, 5, 5, 5]);
 });
+
+test('carrossel de destaques troca sozinho e aceita arrastar', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/');
+  const carousel = page.getByRole('region', { name: 'Destaques' });
+  await expect(carousel).toBeVisible();
+  const dots = carousel.getByRole('button', { name: /Ir para o destaque/ });
+  await expect(dots).toHaveCount(5);
+  const dot = (n: number) => carousel.getByRole('button', { name: `Ir para o destaque ${n}` });
+
+  // Troca sozinho (autoplay de 7s). Mouse fora do carrossel para não pausar.
+  await page.mouse.move(0, 0);
+  await expect(dot(2)).toHaveAttribute('aria-current', 'true', { timeout: 10_000 });
+
+  // Arrasta da direita para a esquerda.
+  const activeIndex = async () => {
+    for (let n = 1; n <= 5; n++) {
+      if ((await dot(n).getAttribute('aria-current')) === 'true') return n;
+    }
+    return 0;
+  };
+  const before = await activeIndex();
+  const box = (await carousel.boundingBox())!;
+  const y = box.y + box.height / 2;
+  const startX = box.x + box.width * 0.8;
+  await page.mouse.move(startX, y);
+  await page.mouse.down();
+  const steps = 12;
+  for (let i = 1; i <= steps; i++) {
+    await page.mouse.move(startX - (box.width * 0.6 * i) / steps, y);
+  }
+  await page.mouse.up();
+  await expect.poll(activeIndex).not.toBe(before);
+
+  // Clique numa bolinha.
+  await dot(4).click();
+  await expect(dot(4)).toHaveAttribute('aria-current', 'true');
+});

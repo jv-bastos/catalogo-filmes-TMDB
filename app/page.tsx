@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import { FeaturedMovie } from '@/components/FeaturedMovie';
+import { FeaturedCarousel } from '@/components/FeaturedCarousel';
 import { MovieGrid } from '@/components/MovieGrid';
 import { Pagination } from '@/components/Pagination';
 import { ProviderFilter } from '@/components/ProviderFilter';
+import { pickFeatured } from '@/lib/featured';
 import { parsePage, parseProviders } from '@/lib/params';
 import { discoverMovies, getProviders } from '@/lib/tmdb/movies';
 import { catalogHref } from '@/lib/urls';
@@ -18,11 +19,11 @@ export default async function CatalogPage({
   const selected = parseProviders(sp.providers, allowed);
   const page = parsePage(sp.page);
   const result = await discoverMovies({ providers: selected.length ? selected : allowed, page });
-  const featured = page === 1 ? result.movies.find((m) => m.backdropPath) : undefined;
+  const featured = page === 1 ? pickFeatured(result.movies) : [];
 
   return (
     <div className="flex flex-col gap-8">
-      {featured && <FeaturedMovie movie={featured} />}
+      {featured.length > 0 && <FeaturedCarousel movies={featured} />}
       <div className="flex flex-col gap-5">
         <h1 className="title-display text-3xl sm:text-4xl">Filmes em streaming no Brasil</h1>
         <ProviderFilter providers={providers} selected={selected} />

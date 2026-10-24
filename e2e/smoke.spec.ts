@@ -147,3 +147,10 @@ test('elenco arrasta com o mouse', async ({ page }) => {
   await page.mouse.up();
   await expect.poll(scrollLeft).toBeGreaterThan(0);
 });
+
+test('elenco não mostra barra de rolagem', async ({ page }) => {
+  await page.goto('/filme/438631');
+  const list = page.getByRole('list', { name: 'Elenco' });
+  await expect(list).toBeVisible();
+  expect(await list.evaluate((el) => getComputedStyle(el).scrollbarWidth)).toBe('none');
+});

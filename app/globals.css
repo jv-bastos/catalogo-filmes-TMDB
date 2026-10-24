@@ -82,13 +82,6 @@ body {
   }
 }
 
-@utility sem-barra {
-  scrollbar-width: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
 @utility btn-ghost {
   display: inline-flex;
   align-items: center;
@@ -105,6 +98,14 @@ body {
     border-color: var(--suave);
     background: var(--palco-alto);
   }
+}
+
+/* Lista rolável sem barra. Classe comum (não @utility): não depende da varredura de candidatos do Tailwind, que no dev ficava desatualizada. */
+.sem-barra {
+  scrollbar-width: none;
+}
+.sem-barra::-webkit-scrollbar {
+  display: none;
 }
 
 /* Botões de streaming: borda em degradê quando selecionados. */

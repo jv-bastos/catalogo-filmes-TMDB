@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { BackButton } from '@/components/BackButton';
 import { CastList } from '@/components/CastList';
 import { WatchProviders } from '@/components/WatchProviders';
 import { parseMovieId } from '@/lib/params';
@@ -40,6 +41,7 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
 
   return (
     <div className="flex flex-col gap-12">
+      <BackButton />
       <section className="relative -mx-4 -mt-6 sm:-mx-6 lg:-mx-10 lg:-mt-8">
         {backdrop && (
           <div aria-hidden className="absolute inset-x-0 top-0 h-[22rem] overflow-hidden lg:h-[30rem]">

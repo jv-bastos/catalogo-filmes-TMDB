@@ -101,3 +101,18 @@ test('carrossel de destaques troca sozinho e aceita arrastar', async ({ page }) 
   await page.mouse.up();
   await expect.poll(activeIndex).not.toBe(before);
 });
+
+test('voltar leva ao catálogo com os filtros', async ({ page }) => {
+  await page.goto('/?providers=8&page=2');
+  await page.getByRole('list', { name: 'Filmes' }).getByRole('link').first().click();
+  await expect(page).toHaveURL(/\/filme\//);
+  await page.getByRole('link', { name: 'Voltar', exact: true }).click();
+  await expect(page).toHaveURL(/providers=8/);
+  await expect(page).toHaveURL(/page=2/);
+});
+
+test('voltar sem histórico vai para o catálogo', async ({ page }) => {
+  await page.goto('/filme/438631');
+  await page.getByRole('link', { name: 'Voltar', exact: true }).click();
+  await expect(page).toHaveURL(/^https?:\/\/[^/]+\/$/);
+});

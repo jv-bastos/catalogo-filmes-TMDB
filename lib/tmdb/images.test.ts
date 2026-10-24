@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { posterUrl, logoUrl } from './images';
+import { backdropUrl, logoUrl, posterUrl, profileUrl } from './images';
 
 describe('images', () => {
   it('posterUrl', () => {
@@ -10,5 +10,13 @@ describe('images', () => {
   it('logoUrl', () => {
     expect(logoUrl('/n.png')).toBe('https://image.tmdb.org/t/p/w92/n.png');
     expect(logoUrl(null)).toBeNull();
+  });
+  it('backdropUrl', () => {
+    expect(backdropUrl('/f.jpg')).toBe('https://image.tmdb.org/t/p/w1280/f.jpg');
+    expect(backdropUrl(null)).toBeNull();
+  });
+  it('profileUrl', () => {
+    expect(profileUrl('/a.jpg')).toBe('https://image.tmdb.org/t/p/w185/a.jpg');
+    expect(profileUrl(null)).toBeNull();
   });
 });

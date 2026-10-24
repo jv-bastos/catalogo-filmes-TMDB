@@ -64,7 +64,9 @@ const page = {
       id: 1,
       title: "Duna",
       poster_path: "/duna.jpg",
+      backdrop_path: "/duna-fundo.jpg",
       release_date: "2021-10-22",
+      overview: "Paul Atreides vai a Arrakis.",
     },
     { id: 2, title: "Sem data", poster_path: null, release_date: "" },
   ],
@@ -84,7 +86,9 @@ describe("discoverMovies", () => {
       id: 1,
       title: "Duna",
       posterPath: "/duna.jpg",
+      backdropPath: "/duna-fundo.jpg",
       releaseYear: "2021",
+      overview: "Paul Atreides vai a Arrakis.",
     });
   });
 
@@ -102,6 +106,8 @@ describe("discoverMovies", () => {
     expect(result.movies[1]).toMatchObject({
       releaseYear: null,
       posterPath: null,
+      backdropPath: null,
+      overview: null,
     });
   });
 });
@@ -136,6 +142,7 @@ describe("getMovieDetails", () => {
           id: i,
           name: `Ator ${i}`,
           character: `Personagem ${i}`,
+          profile_path: i === 0 ? "/ator0.jpg" : null,
         })),
       },
       "watch/providers": {
@@ -164,6 +171,7 @@ describe("getMovieDetails", () => {
       id: 0,
       name: "Ator 0",
       character: "Personagem 0",
+      profilePath: "/ator0.jpg",
     });
     expect(d!.watch).toEqual({
       link: "https://www.themoviedb.org/movie/438631/watch?locale=BR",

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { FeaturedMovie } from '@/components/FeaturedMovie';
 import { MovieGrid } from '@/components/MovieGrid';
 import { Pagination } from '@/components/Pagination';
 import { ProviderFilter } from '@/components/ProviderFilter';
@@ -17,17 +18,21 @@ export default async function CatalogPage({
   const selected = parseProviders(sp.providers, allowed);
   const page = parsePage(sp.page);
   const result = await discoverMovies({ providers: selected.length ? selected : allowed, page });
+  const featured = page === 1 ? result.movies.find((m) => m.backdropPath) : undefined;
 
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-bold">Filmes em streaming no Brasil</h1>
-      <ProviderFilter providers={providers} selected={selected} />
+    <div className="flex flex-col gap-8">
+      {featured && <FeaturedMovie movie={featured} />}
+      <div className="flex flex-col gap-5">
+        <h1 className="title-display text-3xl sm:text-4xl">Filmes em streaming no Brasil</h1>
+        <ProviderFilter providers={providers} selected={selected} />
+      </div>
       {result.movies.length > 0 ? (
         <MovieGrid movies={result.movies} />
       ) : (
-        <div className="py-12 text-center">
-          <p>Nenhum filme encontrado nesses streamings</p>
-          <Link href="/" className="mt-2 inline-block underline">
+        <div className="flex flex-col items-center gap-4 rounded-2xl border border-dashed border-linha py-16 text-center">
+          <p className="text-lg font-semibold">Nenhum filme encontrado nesses streamings</p>
+          <Link href="/" className="btn-ghost">
             Limpar filtros
           </Link>
         </div>

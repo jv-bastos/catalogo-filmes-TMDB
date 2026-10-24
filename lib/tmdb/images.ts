@@ -7,3 +7,11 @@ export function posterUrl(path: string | null, size: 'w342' | 'w500' = 'w342'): 
 export function logoUrl(path: string | null): string | null {
   return path ? `${IMAGE_BASE_URL}/w92${path}` : null;
 }
+
+export function backdropUrl(path: string | null): string | null {
+  return path ? `${IMAGE_BASE_URL}/w1280${path}` : null;
+}
+
+export function profileUrl(path: string | null): string | null {
+  return path ? `${IMAGE_BASE_URL}/w185${path}` : null;
+}

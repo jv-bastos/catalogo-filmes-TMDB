@@ -4,12 +4,14 @@ export type MovieSummary = {
   id: number;
   title: string;
   posterPath: string | null;
+  backdropPath: string | null;
   releaseYear: string | null;
+  overview: string | null;
 };
 
 export type MoviePage = { movies: MovieSummary[]; page: number; totalPages: number };
 
-export type CastMember = { id: number; name: string; character: string };
+export type CastMember = { id: number; name: string; character: string; profilePath: string | null };
 
 export type WatchOptions = {
   link: string | null;
@@ -19,7 +21,6 @@ export type WatchOptions = {
 };
 
 export type MovieDetails = MovieSummary & {
-  overview: string | null;
   runtime: number | null;
   genres: string[];
   cast: CastMember[];
@@ -31,7 +32,9 @@ export type RawMovie = {
   id: number;
   title: string;
   poster_path: string | null;
+  backdrop_path?: string | null;
   release_date?: string | null;
+  overview?: string | null;
 };
 
 export type RawProvider = {
@@ -48,10 +51,9 @@ export type RawPage = {
 };
 
 export type RawMovieDetails = RawMovie & {
-  overview?: string | null;
   runtime?: number | null;
   genres?: { id: number; name: string }[];
-  credits?: { cast: { id: number; name: string; character: string }[] };
+  credits?: { cast: { id: number; name: string; character: string; profile_path?: string | null }[] };
   'watch/providers'?: {
     results?: Record<
       string,

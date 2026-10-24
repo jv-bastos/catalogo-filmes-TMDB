@@ -26,7 +26,9 @@ function mapMovie(m: RawMovie): MovieSummary {
     id: m.id,
     title: m.title,
     posterPath: m.poster_path,
+    backdropPath: m.backdrop_path ?? null,
     releaseYear: m.release_date ? m.release_date.slice(0, 4) : null,
+    overview: m.overview || null,
   };
 }
 
@@ -103,13 +105,13 @@ export async function getMovieDetails(id: number): Promise<MovieDetails | null> 
 
   return {
     ...mapMovie(raw),
-    overview: raw.overview || null,
     runtime: raw.runtime || null,
     genres: (raw.genres ?? []).map((g) => g.name),
     cast: (raw.credits?.cast ?? []).slice(0, CAST_LIMIT).map((c) => ({
       id: c.id,
       name: c.name,
       character: c.character,
+      profilePath: c.profile_path ?? null,
     })),
     watch,
   };

@@ -1,13 +1,14 @@
-# Catálogo de Filmes em Streaming (Brasil)
+# Sessão — Catálogo de Filmes em Streaming (Brasil)
 
 Catálogo de filmes disponíveis em streaming no Brasil, com dados da API do TMDB, onde você descobre **onde assistir** cada título.
 
-## Funcionalidades (v1)
+## Funcionalidades
 
-- Catálogo paginado de filmes disponíveis por assinatura no Brasil
-- Filtro por streaming (os 12 principais provedores no BR), refletido na URL
+- Carrossel com os 5 filmes em alta, que troca sozinho e pode ser arrastado
+- Catálogo paginado de filmes disponíveis por assinatura no Brasil, em grade sempre com linhas completas
+- Filtro por streaming (os 12 principais provedores no BR), refletido na URL, com a tela bloqueada enquanto carrega
 - Busca por título (`/busca?q=`)
-- Página de detalhes com sinopse, elenco e "Onde assistir" (assinatura, aluguel e compra)
+- Página de detalhes com sinopse, "Onde assistir" (assinatura, aluguel e compra), trailer (carregado só ao clicar, via YouTube sem cookies) e elenco arrastável
 - Interface em português (pt-BR), com estados de erro, vazio e carregamento
 
 ## Stack

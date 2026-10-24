@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { CastList } from '@/components/CastList';
+import { Trailer } from '@/components/Trailer';
 import { WatchProviders } from '@/components/WatchProviders';
 import { parseMovieId } from '@/lib/params';
 import { backdropUrl, posterUrl } from '@/lib/tmdb/images';
@@ -95,7 +96,19 @@ export default async function MoviePage({ params }: { params: Promise<{ id: stri
         </div>
       </section>
       <div className="relative flex flex-col gap-12">
-        <WatchProviders watch={movie.watch} />
+        <div className={movie.trailer ? 'flex flex-col gap-12 lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:items-start lg:gap-10' : 'flex flex-col'}>
+          <div className="min-w-0">
+            <WatchProviders watch={movie.watch} />
+          </div>
+          {movie.trailer && (
+            <section aria-labelledby="trailer-titulo" data-testid="secao-trailer" className="flex min-w-0 flex-col gap-4 lg:pr-12 xl:pr-20">
+              <h2 id="trailer-titulo" className="title-display text-3xl">
+                Trailer
+              </h2>
+              <Trailer trailer={movie.trailer} title={movie.title} />
+            </section>
+          )}
+        </div>
         <CastList cast={movie.cast} />
       </div>
     </div>

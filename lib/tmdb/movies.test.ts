@@ -125,7 +125,7 @@ describe("searchMovies", () => {
 });
 
 describe("getMovieDetails", () => {
-  it("pede credits e watch/providers numa única chamada e mapeia tudo", async () => {
+  it("pede credits, watch/providers e videos numa única chamada e mapeia tudo", async () => {
     const captured = capture("/movie/438631", {
       id: 438631,
       title: "Duna",
@@ -144,6 +144,12 @@ describe("getMovieDetails", () => {
           character: `Personagem ${i}`,
           profile_path: i === 0 ? "/ator0.jpg" : null,
         })),
+      },
+      videos: {
+        results: [
+          { key: "yt1", site: "YouTube", type: "Trailer", iso_639_1: "pt", official: true, name: "Trailer oficial" },
+          { key: "vm1", site: "Vimeo", type: "Trailer", iso_639_1: "pt", official: true, name: "Outro" },
+        ],
       },
       "watch/providers": {
         results: {
@@ -164,8 +170,10 @@ describe("getMovieDetails", () => {
     const d = await getMovieDetails(438631);
     expect(captured.url.pathname).toBe("/3/movie/438631");
     expect(captured.url.searchParams.get("append_to_response")).toBe(
-      "credits,watch/providers",
+      "credits,watch/providers,videos",
     );
+    expect(captured.url.searchParams.get("include_video_language")).toBe("pt,en");
+    expect(d!.trailer).toEqual({ key: "yt1", name: "Trailer oficial" });
     expect(d!.cast).toHaveLength(10);
     expect(d!.cast[0]).toEqual({
       id: 0,
@@ -204,6 +212,7 @@ describe("getMovieDetails", () => {
       runtime: null,
       watch: null,
       cast: [],
+      trailer: null,
       posterPath: null,
       releaseYear: null,
     });

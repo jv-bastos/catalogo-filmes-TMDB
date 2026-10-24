@@ -1,6 +1,7 @@
 import 'server-only';
 import { MAX_PAGES } from '../params';
 import { TmdbError, tmdbFetch } from './client';
+import { pickTrailer } from './trailer';
 import type {
   MovieDetails,
   MoviePage,
@@ -85,7 +86,7 @@ export async function getMovieDetails(id: number): Promise<MovieDetails | null> 
   try {
     raw = await tmdbFetch<RawMovieDetails>(
       `/movie/${id}`,
-      { append_to_response: 'credits,watch/providers' },
+      { append_to_response: 'credits,watch/providers,videos', include_video_language: 'pt,en' },
       3600,
     );
   } catch (err) {
@@ -114,5 +115,6 @@ export async function getMovieDetails(id: number): Promise<MovieDetails | null> 
       profilePath: c.profile_path ?? null,
     })),
     watch,
+    trailer: pickTrailer(raw.videos?.results ?? []),
   };
 }

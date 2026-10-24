@@ -20,11 +20,14 @@ export type WatchOptions = {
   buy: Provider[];
 };
 
+export type Trailer = { key: string; name: string };
+
 export type MovieDetails = MovieSummary & {
   runtime: number | null;
   genres: string[];
   cast: CastMember[];
   watch: WatchOptions | null;
+  trailer: Trailer | null;
 };
 
 // Tipos crus da API do TMDB (usados apenas por movies.ts)
@@ -50,10 +53,21 @@ export type RawPage = {
   total_pages: number;
 };
 
+export type RawVideo = {
+  key: string;
+  site: string;
+  type: string;
+  iso_639_1: string;
+  official: boolean;
+  published_at?: string;
+  name: string;
+};
+
 export type RawMovieDetails = RawMovie & {
   runtime?: number | null;
   genres?: { id: number; name: string }[];
   credits?: { cast: { id: number; name: string; character: string; profile_path?: string | null }[] };
+  videos?: { results?: RawVideo[] };
   'watch/providers'?: {
     results?: Record<
       string,

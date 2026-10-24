@@ -46,7 +46,7 @@ function Group({ title, providers }: { title: string; providers: Provider[] }) {
 export function WatchProviders({ watch }: { watch: WatchOptions | null }) {
   const empty = !watch || (watch.flatrate.length === 0 && watch.rent.length === 0 && watch.buy.length === 0);
   return (
-    <section className="flex flex-col gap-4">
+    <section data-testid="secao-onde-assistir" className="flex flex-col gap-4">
       <h2 className="title-display text-3xl">Onde assistir</h2>
       {empty ? (
         <p className="text-suave">Não disponível em streaming no Brasil</p>

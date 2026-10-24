@@ -126,3 +126,26 @@ test('elenco não mostra barra de rolagem', async ({ page }) => {
   await expect(list).toBeVisible();
   expect(await list.evaluate((el) => getComputedStyle(el).scrollbarWidth)).toBe('none');
 });
+
+test('trailer carrega ao clicar', async ({ page }) => {
+  await page.goto('/filme/438631');
+  const botao = page.getByRole('button', { name: 'Assistir ao trailer de Duna' });
+  await expect(botao).toBeVisible();
+  await botao.click();
+  await expect(page.locator('iframe[title="Trailer de Duna"]')).toHaveAttribute('src', /youtube-nocookie\.com\/embed\//);
+});
+
+test('streamings e trailer lado a lado', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/filme/438631');
+  const streamings = page.getByTestId('secao-onde-assistir');
+  const trailer = page.getByTestId('secao-trailer');
+  await expect(trailer).toBeVisible();
+  const a = (await streamings.boundingBox())!;
+  const b = (await trailer.boundingBox())!;
+  expect(a.x + a.width).toBeLessThanOrEqual(b.x);
+  expect(Math.abs(a.y - b.y)).toBeLessThan(2);
+  const video = (await trailer.getByRole('button', { name: /Assistir ao trailer/ }).boundingBox())!;
+  expect(1440 - (video.x + video.width)).toBeGreaterThanOrEqual(90);
+  expect(video.width).toBeGreaterThanOrEqual(660);
+});
